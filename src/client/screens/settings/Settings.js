@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { AsyncStorage, Button, StyleSheet, Text, View } from 'react-native'
+import DeviceInfo from 'react-native-device-info';
 import _ from 'lodash'
 
 import { Permissions, Notifications } from 'expo'
@@ -28,7 +29,8 @@ export default class Settings extends React.Component {
     delivery: {
       date: null,
       hour: 6,
-      minute: 0
+      minute: 0,
+      timezone: null
     },
     temperature: {
       scale: 'celsius',
@@ -59,6 +61,12 @@ export default class Settings extends React.Component {
         ...settings
       })
     }
+
+    //update current timezone
+    const currentTimeZone = DeviceInfo.getTimezone()
+    this.state.delivery.timezone = this.state.delivery.timezone || currentTimeZone
+    if (currentTimeZone !== this.state.delivery.timezone)
+      this.state.synced = false
 
     // schedule sync in case the last one was not successful
     this.sync()

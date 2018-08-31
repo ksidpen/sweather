@@ -6,7 +6,11 @@ const { sendPushNotification } = require('../../util/pushService')
 
 const scheduleOrReSchedule = (record) => {
   let document = {...record.toJSON()}
-  let delivery = moment(document.delivery.date).tz(process.env.TIMEZONE || 'Europe/Berlin')
+  let delivery = moment
+    // parse with original timezone
+    .tz(document.delivery.date, document.delivery.timezone)
+    // convert to server timezone
+    .tz(process.env.TIMEZONE || 'Europe/Berlin')
   let rule = {
     hour: delivery.hour,
     minute: delivery.minute

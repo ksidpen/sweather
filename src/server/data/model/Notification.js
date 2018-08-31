@@ -15,7 +15,11 @@ const NotificationSchema = new mongoose.Schema({
   delivery: {
     date: Date,
     hour: Number,
-    minute: Number
+    minute: Number,
+    timezone: {
+      type: String,
+      default: 'Europe/Berlin'
+    }
   },
   temperature: {
     scale: String,
